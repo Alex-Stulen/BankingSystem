@@ -16,3 +16,5 @@ A program for keeping track of your expenses and income
 3. delete month \<month> - delete month with number \<month>
 4. quit - exit program
 
+For start run file 'spending.py'
+
