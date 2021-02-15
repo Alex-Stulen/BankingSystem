@@ -1,0 +1,12 @@
+{
+    "get": {
+        "spending": "get_spending"
+    },
+    "set": {
+        "spending": "set_spending"
+    },
+    "delete": {
+      "month": "delete_month"
+    },
+    "quit": "quit"
+}
