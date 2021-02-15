@@ -5,7 +5,7 @@ A program for keeping track of your expenses and income
 ```version = 0.0.1```
 
 
-###Docs:
+### Docs:
 ```<command> <value> <value> <value> <...>```<br>
 ```Example: command: 'get spending':```<br>
 ```Output: Table with data```
