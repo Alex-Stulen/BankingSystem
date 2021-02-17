@@ -1,6 +1,9 @@
 {
     "get": {
-        "spending": "get_spending"
+        "spending": "get_spending",
+        "month": {
+            "spending": "get_month_spending"
+        }
     },
     "set": {
         "spending": "set_spending"

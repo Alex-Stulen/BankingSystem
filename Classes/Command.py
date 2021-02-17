@@ -64,6 +64,16 @@ class Command:
         except Exception as e:
             raise Exceptions.GetJsonError('Неудалось получить данные о тратах\t' + str(e))
 
+    def get_month_spending(self):
+        try:
+            data = self.class_db_data.get_json()
+
+            if len(data) == 0:
+                print('--Нет данных--')
+        except Exception as e:
+            print(str(e))
+
+
     def set_spending(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
