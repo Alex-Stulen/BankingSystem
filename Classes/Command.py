@@ -21,6 +21,7 @@ class Command:
         try:
 
             if index >= len(command_list) or type(dict__) is str:
+                print(command_list)
                 return dict__, command_list[index:]
 
             if dict__[command_list[index]]:
@@ -36,11 +37,22 @@ class Command:
         except Exception as e:
             raise Exceptions.RunFunctionError('Неудалось запустить функцию\t' + str(e))
 
-    @staticmethod
-    def get_command():
+    def get_command(self, *args, **kwargs):
         try:
             command_line = str(input('Введите команду: '))
-            command = command_line.split(' ')
+            # command = command_line.split(' ')
+            if command_line.find('"') != -1 and command_line.find(' : ') != -1:
+                command = command_line.split(' : ')
+                args = command[1].split('"')
+                args = args[0].split(' ') + [args[1]]
+                args = [item for item in args if item != '']
+                command = command[0].split(' ')
+                command = command + args
+            elif command_line.find(' : ') != -1:
+                command = command_line.split(' : ')
+                command = command[0].split(' ') + command[1].split(' ')
+            else:
+                command = command_line.split(' ')
 
             return command
         except Exception as e:
@@ -58,29 +70,82 @@ class Command:
                 table.field_names = ['Month', 'Spending', 'Salary', 'Rest Money']
 
                 for value, key in data.items():
-                    table.add_row([int(value), int(key['price']), int(key['salary']), int(key['rest_money'])])
+                    if str(value) == 'spending':
+                        data = list(list(key.items())[0])
+                        table.add_row([data[0], data[1]['price'], data[1]['salary'], data[1]['rest_money']])
 
                 print(table)
         except Exception as e:
             raise Exceptions.GetJsonError('Неудалось получить данные о тратах\t' + str(e))
 
-    def get_month_spending(self):
+    def get_month_spending(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
+            data = data['month'][str(args[0])]
+            print(data)
 
             if len(data) == 0:
                 print('--Нет данных--')
-        except Exception as e:
-            print(str(e))
+            else:
+                table = PrettyTable()
+                table.field_names = ['Month', '№', 'Spending', 'Salary', 'Rest Money', 'Description']
 
+                for key, value in data.items():
+                    print(key, value)
+                    table.add_row([
+                        args[0],
+                        key,
+                        value['price'],
+                        value['salary'],
+                        value['rest_money'],
+                        value['description']
+                    ])
+
+                print(table)
+        except Exception as e:
+            raise Exceptions.GetJsonError('Неудалось получить данные месяца о тратах\t' + str(e))
+
+    def set_month_detail(self, args, **kwargs):
+        try:
+            data = self.class_db_data.get_json()
+            try:
+                data = data['month'][str(args[0])]
+            except:
+                data = data['month']
+
+            try:
+                data['month'][str(args[0])][str(args[1])] = {
+                    'price': args[2],
+                    'salary': args[3],
+                    'rest_money': int(args[3]) - int(args[2]),
+                    'description': args[4]
+                }
+            except:
+                data['month'] = {
+                    f'{args[0]}': {
+                        f'{args[1]}': {
+                            'price': args[2],
+                            'salary': args[3],
+                            'rest_money': int(args[3]) - int(args[2]),
+                            'description': args[4]
+                        }
+                    }
+                }
+
+
+            self.class_db_data.set_json(data)
+        except Exception as e:
+            raise Exceptions.SetJsonError('Неудалось загрузить детальные данные о тратах за месяц\t' + str(e))
 
     def set_spending(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
-            data[args[0]] = {
-                'price': args[1],
-                'salary': args[2],
-                'rest_money': int(args[2]) - int(args[1])
+            data['spending'] = {
+                f'{args[0]}': {
+                    'price': args[1],
+                    'salary': args[2],
+                    'rest_money': int(args[2]) - int(args[1])
+                }
             }
 
             self.class_db_data.set_json(data)
