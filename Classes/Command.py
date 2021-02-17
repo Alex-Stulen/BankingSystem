@@ -73,7 +73,6 @@ class Command:
         except Exception as e:
             print(str(e))
 
-
     def set_spending(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
