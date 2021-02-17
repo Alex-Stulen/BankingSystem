@@ -108,30 +108,42 @@ class Command:
     def set_month_detail(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
-            try:
-                data = data['month'][str(args[0])]
-            except:
-                data = data['month']
-
-            try:
-                data['month'][str(args[0])][str(args[1])] = {
-                    'price': args[2],
-                    'salary': args[3],
-                    'rest_money': int(args[3]) - int(args[2]),
-                    'description': args[4]
+            data = data.get('month')
+            args_ = {
+                f'{args[0]}': {
+                    f'{args[1]}': {
+                        'price': args[2],
+                        'salary': args[3],
+                        'rest_money': int(args[3]) - int(args[2]),
+                        'description': args[4],
+                    }
                 }
-            except:
-                data['month'] = {
-                    f'{args[0]}': {
+            }
+
+            if data is not None:
+                data_ = data.get(f'{args[0]}')
+                if data_ is not None:
+                    args_ = {
                         f'{args[1]}': {
                             'price': args[2],
                             'salary': args[3],
                             'rest_money': int(args[3]) - int(args[2]),
-                            'description': args[4]
+                            'description': args[4],
                         }
-                    }
-                }
 
+                    }
+                    data[args[0]].update(args_)
+                    data = {
+                        'month': data
+                    }
+                else:
+                    data.update(args_)
+
+            else:
+                data = {
+                    'month': {}
+                }
+                data['month'].update(args_)
 
             self.class_db_data.set_json(data)
         except Exception as e:
