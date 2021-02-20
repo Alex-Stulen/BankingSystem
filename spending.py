@@ -18,6 +18,7 @@ def main():
 	work_end = False
 	while not work_end:
 		command = COMMAND.get_command()
+		# print(command)
 		define_command = COMMAND.define_command(dict__=commands_dict, command_list=command)
 		define_command = list(define_command)
 
