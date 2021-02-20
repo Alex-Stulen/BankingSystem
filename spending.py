@@ -18,10 +18,14 @@ def main():
 	work_end = False
 	while not work_end:
 		command = COMMAND.get_command()
+		# print(command)
 		define_command = COMMAND.define_command(dict__=commands_dict, command_list=command)
 		define_command = list(define_command)
 
-		COMMAND.run_command(command_func=define_command[0], args=define_command[1])
+		try:
+			COMMAND.run_command(command_func=define_command[0], args=define_command[1])
+		except Exception as e:
+			print(e)
 
 	return 0
 
