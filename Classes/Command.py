@@ -90,7 +90,6 @@ class Command:
         try:
             data = self.class_db_data.get_json()
             data = data['month'][str(args[0])]
-            print(data)
 
             if len(data) == 0:
                 print('--Нет данных--')
@@ -140,12 +139,15 @@ class Command:
                         }
 
                     }
+                    data_ = self.class_db_data.get_json()
                     data[args[0]].update(args_)
                     data = {
-                        'month': data
+                        'month': data,
+                        'spending': data_['spending']
                     }
                 else:
-                    data.update(args_)
+                    data = self.class_db_data.get_json()
+                    data['month'].update(args_)
 
             else:
                 data = {
