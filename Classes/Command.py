@@ -21,7 +21,7 @@ class Command:
         try:
 
             if index >= len(command_list) or type(dict__) is str:
-                print(command_list)
+                # print(command_list)
                 return dict__, command_list[index:]
 
             if dict__[command_list[index]]:
@@ -38,6 +38,14 @@ class Command:
             raise Exceptions.RunFunctionError('Неудалось запустить функцию\t' + str(e))
 
     def get_command(self, *args, **kwargs):
+        """
+            The function must not be static because otherwise the given function will not be found in the object
+
+            :param args:
+            :param kwargs:
+            :return: command list
+        """
+
         try:
             command_line = str(input('Введите команду: '))
             # command = command_line.split(' ')
@@ -167,7 +175,9 @@ class Command:
     def delete_month(self, args, **kwargs):
         try:
             data = self.class_db_data.get_json()
-            del data[args[0]]
+            if (data.get('month') is not None) and (data.get('spending') is not None):
+                del data['month'][args[0]]
+                del data['spending'][args[0]]
 
             self.class_db_data.set_json(data)
         except Exception as e:
