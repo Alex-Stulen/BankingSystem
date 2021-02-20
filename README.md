@@ -2,7 +2,7 @@
 
 A program for keeping track of your expenses and income
 
-```version = 0.0.1```
+```version = 0.0.3```
 
 
 ### Docs:
