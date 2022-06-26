@@ -1,4 +1,5 @@
 /.idea
+/data/db.json
 test.py
 /__pycache__
 /Classes/__pycache__

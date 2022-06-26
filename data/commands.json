@@ -1,9 +1,12 @@
 {
     "get": {
-        "spending": "get_spending"
+        "command": "get_command",
+        "spending": "get_spending",
+        "month": "get_month_spending"
     },
     "set": {
-        "spending": "set_spending"
+        "spending": "set_spending",
+        "month": "set_month_detail"
     },
     "delete": {
       "month": "delete_month"
