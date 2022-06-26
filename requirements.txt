@@ -1,2 +1,1 @@
-Python=3.8.6
-prettytable=2.0.0
+prettytable==2.0.0
